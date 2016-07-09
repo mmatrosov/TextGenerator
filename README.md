@@ -31,4 +31,4 @@ Learn through example:
 	eaking country in bohemia not far from carlsbad remarkable as being the scene of
 	 the struggle how cruelly i have misjudged him when
 	 
-For more information run the executable with no arguments and see the help.
+For more information run the executable with no arguments and see the help. You can find some input text files in the `data` directory.
