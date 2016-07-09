@@ -40,7 +40,7 @@ void Trainer::updateCountsFromFile(const boost::filesystem::path& file)
   {
     if (concatenator.getCurrentOrder() == m_order)
     {
-      auto hash = computeHash(concatenator.getConcatenation());
+      auto hash = concatenator.getConcatenation();
       m_counts[hash][word]++;
     }
 

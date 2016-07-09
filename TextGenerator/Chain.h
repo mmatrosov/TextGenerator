@@ -2,7 +2,7 @@
 
 struct Chain
 {
-  using TailHash = std::hash<std::string>::result_type;
+  using TailHash = std::string;
 
   struct Edge
   {
@@ -15,9 +15,3 @@ struct Chain
   int order;
   Content content;
 };
-
-template<class T>
-auto computeHash(const T& x)
-{
-  return std::hash<T>()(x);
-}
