@@ -21,7 +21,12 @@ void Concatenator::pushWord(const std::string& word)
     m_currentOrder++;
   }
 
-  m_concatenation += ' ' + word;
+  if (!m_concatenation.empty())
+  {
+    m_concatenation += ' ';
+  }
+
+  m_concatenation += word;
 }
 
 void Concatenator::popWord()

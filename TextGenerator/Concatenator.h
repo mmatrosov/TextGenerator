@@ -10,6 +10,7 @@ public:
 
   int getCurrentOrder() const;
 
+  // ToDo: it will be more efficient to represent concatenation as a deque of strings and provide a hash for it
   const std::string& getConcatenation() const;
 
 private:
