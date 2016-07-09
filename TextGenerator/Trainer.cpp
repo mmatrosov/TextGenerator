@@ -43,8 +43,8 @@ void Trainer::updateCountsFromFile(const fs::path& file)
   {
     if (sequenceMaker.getCurrentSize() == m_order)
     {
-      auto hash = sequenceMaker.getSequence();
-      m_counts[hash][word]++;
+      auto sequence = sequenceMaker.getSequence();
+      m_counts[sequence][word]++;
     }
 
     sequenceMaker.pushWord(word);
