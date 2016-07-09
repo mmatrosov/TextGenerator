@@ -80,7 +80,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Chain.h" />
-    <ClInclude Include="Concatenator.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="SequenceMaker.h" />
     <ClInclude Include="Generator.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Trainer.h" />
@@ -88,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
-    <ClCompile Include="Concatenator.cpp" />
+    <ClCompile Include="SequenceMaker.cpp" />
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

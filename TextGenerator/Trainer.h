@@ -11,7 +11,7 @@ public:
 
 private:
   using NextWordsCounter = std::unordered_map<std::string, int>;
-  using Counts = std::unordered_map<Chain::TailHash, NextWordsCounter>;
+  using Counts = std::unordered_map<WordsSequence, NextWordsCounter>;
 
   void updateCountsFromFile(const boost::filesystem::path& file);
 

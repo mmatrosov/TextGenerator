@@ -2,7 +2,7 @@
 #include "Trainer.h"
 
 #include "WordStream.h"
-#include "Concatenator.h"
+#include "SequenceMaker.h"
 
 Trainer::Trainer(int order) : m_order(order)
 {
@@ -34,17 +34,17 @@ void Trainer::updateCountsFromFile(const boost::filesystem::path& file)
   WordStream wordStream(input);
 
   std::string word;
-  Concatenator concatenator(m_order);
+  SequenceMaker sequenceMaker(m_order);
 
   while (wordStream >> word)
   {
-    if (concatenator.getCurrentOrder() == m_order)
+    if (sequenceMaker.getCurrentSize() == m_order)
     {
-      auto hash = concatenator.getConcatenation();
+      auto hash = sequenceMaker.getSequence();
       m_counts[hash][word]++;
     }
 
-    concatenator.pushWord(word);
+    sequenceMaker.pushWord(word);
   }
 }
 

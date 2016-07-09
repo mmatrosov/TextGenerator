@@ -1,16 +1,16 @@
 #pragma once
 
+#include "Common.h"
+
 struct Chain
 {
-  using TailHash = std::string;
-
   struct Edge
   {
     double probability;
     std::string word;
   };
   using Edges = std::vector<Edge>;
-  using Content = std::unordered_map<TailHash, Edges>;
+  using Content = std::unordered_map<WordsSequence, Edges>;
 
   int order;
   Content content;

@@ -8,3 +8,4 @@
 *.aps
 x64/
 /ipch/
+/_ReSharper.Caches/

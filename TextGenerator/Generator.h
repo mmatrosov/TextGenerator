@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Concatenator.h"
+#include "SequenceMaker.h"
 #include "Chain.h"
 
 class Generator
@@ -14,7 +14,7 @@ private:
   const std::string& pickRandomWord(const Chain::Edges& edges);
 
   const Chain& m_chain;
-  Concatenator m_concatenator;
+  SequenceMaker m_sequenceMaker;
 
   std::uniform_real_distribution<double> m_randDistr;
   std::default_random_engine m_randEngine;

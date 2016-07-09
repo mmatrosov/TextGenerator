@@ -27,10 +27,13 @@
     <ClInclude Include="WordStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Concatenator.h">
+    <ClInclude Include="Generator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Generator.h">
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SequenceMaker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,13 +50,13 @@
     <ClCompile Include="WordStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Concatenator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Generator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SequenceMaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

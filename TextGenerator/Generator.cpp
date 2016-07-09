@@ -5,7 +5,7 @@
 
 Generator::Generator(const Chain& chain, std::istream& input) : 
   m_chain(chain),
-  m_concatenator(chain.order),
+  m_sequenceMaker(chain.order),
   m_randDistr(0, 1)
 {
   WordStream wordStream(input);
@@ -20,13 +20,13 @@ Generator::Generator(const Chain& chain, std::istream& input) :
         "Expected: " + std::to_string(chain.order) + ", provided: " + std::to_string(i) + ".").c_str());
     }
 
-    m_concatenator.pushWord(word);
+    m_sequenceMaker.pushWord(word);
   }
 }
 
 std::string Generator::genNextWord()
 {
-  auto it = m_chain.content.find(m_concatenator.getConcatenation());
+  auto it = m_chain.content.find(m_sequenceMaker.getSequence());
   if (it == m_chain.content.end())
   {
     throw std::runtime_error("Cannot generate next word! Train your chain better.");
@@ -34,7 +34,7 @@ std::string Generator::genNextWord()
 
   std::string nextWord = pickRandomWord(it->second);
 
-  m_concatenator.pushWord(nextWord);
+  m_sequenceMaker.pushWord(nextWord);
 
   return nextWord;
 }
