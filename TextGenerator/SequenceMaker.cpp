@@ -12,6 +12,11 @@ void SequenceMaker::pushWord(const std::string& word)
 {
   assert(boost::algorithm::all_of(word, boost::is_alpha()));
 
+  if (m_maxSize == 0)
+  {
+    return;
+  }
+
   if (m_maxSize == m_currentSize)
   {
     popWord();
