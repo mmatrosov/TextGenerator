@@ -76,10 +76,11 @@ void mainImpl(int argc, char* argv[])
   {
     std::clog << "Creating chain..." << std::endl;
     auto order = options["train"].as<int>();
+    if (order < 0) { throw std::runtime_error("Chain order should be a positive value!"); }
     auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
     auto chain = Trainer(order).createChainFromFiles(inputFiles);
 
-    std::cout << "Saving chain to " << chainFile << "..." << std::endl;
+    std::clog << "Saving chain to " << chainFile << "..." << std::endl;
     {
       boost::filesystem::ofstream output(chainFile);
       boost::archive::text_oarchive archive(output);
@@ -91,18 +92,18 @@ void mainImpl(int argc, char* argv[])
   {
     Chain chain; 
 
-    std::cout << "Reading chain from " << chainFile << "..." << std::endl;
+    std::clog << "Reading chain from " << chainFile << "..." << std::endl;
     {
       boost::filesystem::ifstream input(chainFile);
       boost::archive::text_iarchive archive(input);
       archive >> chain;
     }
 
-    std::cout << "Input first " << chain.order << " words: ";
+    std::clog << "Input first " << chain.order << " words: ";
     auto generator = Generator(chain, std::cin);
 
-    std::clog << "Generating text..." << std::endl;
     auto count = options["gen"].as<int>();
+    std::clog << "Generating further " << count << " words:" << std::endl;
     for (int i = 0; i < count; ++i)
     {
       std::cout << generator.genNextWord() << ' ';

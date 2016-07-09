@@ -6,6 +6,7 @@
 
 Trainer::Trainer(int order) : m_order(order)
 {
+  assert(order >= 0);
 }
 
 Chain Trainer::createChainFromFiles(const std::vector<boost::filesystem::path>& files)
@@ -14,7 +15,9 @@ Chain Trainer::createChainFromFiles(const std::vector<boost::filesystem::path>& 
 
   for (const auto& file : files)
   {
+    std::clog << "Processing file " << file << "...";
     updateCountsFromFile(file);
+    std::clog << " done" << std::endl;
   }
 
   Chain chain;
