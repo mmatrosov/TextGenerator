@@ -2,6 +2,7 @@
 
 #include "Generator.h"
 #include "Trainer.h"
+#include "Serialization.h"
 
 // There is a bug that we cannot pass boost::filesystem::path directly as 
 // value to boost::program_options element, so we need this stupid conversion.
@@ -24,7 +25,6 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
      "Starting words are provided through standard input, generated text is written to standard output.")
     ("input,i", value<std::vector<std::string>>()->multitoken(),
      "Set of space separated input text files for chain creation. Used only for training.")
-  // ToDo: need to actully save the chain
     ("chain,c", value<std::string>()->required(),
      "File with Markov's chain. When training, file will be created; when generating, file will be read.")
     ;
@@ -70,21 +70,45 @@ void mainImpl(int argc, char* argv[])
 {
   auto options = readOptions(argc, argv);
 
-  std::clog << "Creating chain..." << std::endl;
-  auto order = options["train"].as<int>();
-  auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
-  auto chain = Trainer(order).createChainFromFiles(inputFiles);
+  boost::filesystem::path chainFile = options["chain"].as<std::string>();
 
-  std::cout << "Input first " << order << " words: ";
-  auto generator = Generator(chain, std::cin);
-
-  std::clog << "Generating text..." << std::endl;
-  auto count = options["gen"].as<int>();
-  for (int i = 0; i < count; ++i)
+  if (options.count("train"))
   {
-    std::cout << generator.genNextWord() << ' ';
+    std::clog << "Creating chain..." << std::endl;
+    auto order = options["train"].as<int>();
+    auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
+    auto chain = Trainer(order).createChainFromFiles(inputFiles);
+
+    std::cout << "Saving chain to " << chainFile << "..." << std::endl;
+    {
+      boost::filesystem::ofstream output(chainFile);
+      boost::archive::text_oarchive archive(output);
+      archive << chain;
+    }
   }
-  std::cout << std::endl;
+
+  if (options.count("gen"))
+  {
+    Chain chain; 
+
+    std::cout << "Reading chain from " << chainFile << "..." << std::endl;
+    {
+      boost::filesystem::ifstream input(chainFile);
+      boost::archive::text_iarchive archive(input);
+      archive >> chain;
+    }
+
+    std::cout << "Input first " << chain.order << " words: ";
+    auto generator = Generator(chain, std::cin);
+
+    std::clog << "Generating text..." << std::endl;
+    auto count = options["gen"].as<int>();
+    for (int i = 0; i < count; ++i)
+    {
+      std::cout << generator.genNextWord() << ' ';
+    }
+    std::cout << std::endl;
+  }
 }
 
 int main(int argc, char* argv[])

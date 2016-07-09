@@ -11,6 +11,10 @@
 #include <unordered_map>
 #include <random>
 
-#include <boost/program_options.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/serialization/vector.hpp>
