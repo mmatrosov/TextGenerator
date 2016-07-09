@@ -79,14 +79,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Chain.h" />
+    <ClInclude Include="Concatenator.h" />
+    <ClInclude Include="Generator.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Trainer.h" />
+    <ClInclude Include="WordStream.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Chain.cpp" />
+    <ClCompile Include="Concatenator.cpp" />
+    <ClCompile Include="Generator.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TextGenerator.cpp" />
+    <ClCompile Include="Trainer.cpp" />
+    <ClCompile Include="WordStream.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

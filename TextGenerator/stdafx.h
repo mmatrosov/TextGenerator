@@ -5,7 +5,12 @@
 
 #pragma once
 
+#include <cctype>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
+#include <random>
 
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>

@@ -1,5 +1,16 @@
 #include "stdafx.h"
 
+#include "Generator.h"
+#include "Trainer.h"
+
+// There is a bug that we cannot pass boost::filesystem::path directly as 
+// value to boost::program_options element, so we need this stupid conversion.
+// See https://svn.boost.org/trac/boost/ticket/8535
+static auto stringsToPaths(const std::vector<std::string>& strings)
+{
+  return boost::copy_range<std::vector<boost::filesystem::path>>(strings);
+}
+
 boost::program_options::variables_map readOptions(int argc, const char* const argv[])
 {
   using namespace boost::program_options;
@@ -11,29 +22,43 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
     ("gen", value<int>(), 
      "Use to generate given number of words given a Markov's chain and several starting words. "
      "Starting words are provided through standard input, generated text is written to standard output.")
-    ("input,i", value<std::vector<std::string>>(), 
-     "Set of input files for chain creation. Used only for training.")
-    ("chain,c", value<std::string>(),
+    ("input,i", value<std::vector<std::string>>()->multitoken(),
+     "Set of space separated input text files for chain creation. Used only for training.")
+    ("chain,c", value<std::string>()->required(),
      "File with Markov's chain. When training, file will be created; when generating, file will be read.")
     ;
 
   variables_map options;
-
   try
   {
     store(command_line_parser(argc, argv).options(descr).run(), options);
+
+    if (options.empty())
+    {
+      std::cout << "Text generator based on Markov's chains." << std::endl;
+      std::cout << "Created by Mikhail Matrosov, July 2016. Special for Mail.ru." << std::endl;
+      std::cout << std::endl;
+      std::cout << descr << std::endl;
+      std::exit(0);
+    }
+
     notify(options);
   }
-  catch (error e)
+  catch (error& e)
   {
     throw std::runtime_error("Cannot parse arguments! Error: " + std::string(e.what()) + ".");
   }
 
-  if (options.empty())
+  bool isTraining = options.count("train") > 0;
+  bool isGenerating = options.count("gen") > 0;
+
+  if (!isTraining && !isGenerating)
   {
-    std::cout << "Text generator based on Markov's chains. Created by Mikhail Matrosov, July 2016 special for Mail.ru." << std::endl;
-    std::cout << std::endl;
-    std::cout << descr << std::endl;
+    throw std::runtime_error("Specify the working mode! You should be either trainig, or generating, or both.");
+  }
+  if (isTraining && !options.count("input"))
+  {
+    throw std::runtime_error("Specify input files for training!");
   }
 
   return options;
@@ -41,6 +66,30 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
 
 int main(int argc, char* argv[])
 {
-  auto options = readOptions(argc, argv);
+  try
+  {
+    auto options = readOptions(argc, argv);
+
+    auto order = options["train"].as<int>();
+    auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
+    std::clog << "Creating chain..." << std::endl;
+    auto chain = Trainer(order).createChainFromFiles(inputFiles);
+
+    std::clog << "Input first " << order << " words :" << std::endl;
+    auto generator = Generator(chain, std::cin);
+
+    std::clog << "Generating text..." << std::endl;
+    auto count = options["gen"].as<int>();
+    for (int i = 0; i < count; ++i)
+    {
+      std::cout << generator.genNextWord() << ' ';
+    }
+    std::cout << std::endl;
+  }
+  catch (const std::exception& e)
+  {
+    std::cerr << std::endl << e.what() << std::endl;
+    return 1;
+  }
   return 0;
 }
