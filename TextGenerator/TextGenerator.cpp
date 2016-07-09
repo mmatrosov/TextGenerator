@@ -99,7 +99,8 @@ void mainImpl(int argc, char* argv[])
       archive >> chain;
     }
 
-    std::clog << "Input first " << chain.order << " words: ";
+    std::clog << "Input first " << chain.order << " words: " << std::endl;
+    std::clog << "> ";
     auto generator = Generator(chain, std::cin);
 
     auto count = options["gen"].as<int>();
