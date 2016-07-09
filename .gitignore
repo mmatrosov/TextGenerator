@@ -1,0 +1,10 @@
+*.sdf
+*.ipch
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.aps
+x64/
+/ipch/
