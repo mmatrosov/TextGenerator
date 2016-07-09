@@ -18,3 +18,5 @@
 #include <boost/program_options.hpp>
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/serialization/vector.hpp>
+
+namespace fs = boost::filesystem;

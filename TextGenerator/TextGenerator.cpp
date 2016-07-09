@@ -9,7 +9,7 @@
 // See https://svn.boost.org/trac/boost/ticket/8535
 static auto stringsToPaths(const std::vector<std::string>& strings)
 {
-  return boost::copy_range<std::vector<boost::filesystem::path>>(strings);
+  return boost::copy_range<std::vector<fs::path>>(strings);
 }
 
 boost::program_options::variables_map readOptions(int argc, const char* const argv[])
@@ -70,7 +70,7 @@ void mainImpl(int argc, char* argv[])
 {
   auto options = readOptions(argc, argv);
 
-  boost::filesystem::path chainFile = options["chain"].as<std::string>();
+  fs::path chainFile = options["chain"].as<std::string>();
 
   if (options.count("train"))
   {
@@ -82,7 +82,7 @@ void mainImpl(int argc, char* argv[])
 
     std::clog << "Saving chain to " << chainFile << "..." << std::endl;
     {
-      boost::filesystem::ofstream output(chainFile);
+      fs::ofstream output(chainFile);
       boost::archive::text_oarchive archive(output);
       archive << chain;
     }
@@ -94,7 +94,7 @@ void mainImpl(int argc, char* argv[])
 
     std::clog << "Reading chain from " << chainFile << "..." << std::endl;
     {
-      boost::filesystem::ifstream input(chainFile);
+      fs::ifstream input(chainFile);
       boost::archive::text_iarchive archive(input);
       archive >> chain;
     }

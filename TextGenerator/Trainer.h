@@ -7,13 +7,13 @@ class Trainer
 public:
   explicit Trainer(int order);
 
-  Chain createChainFromFiles(const std::vector<boost::filesystem::path>& files);
+  Chain createChainFromFiles(const std::vector<fs::path>& files);
 
 private:
   using NextWordsCounter = std::unordered_map<std::string, int>;
   using Counts = std::unordered_map<WordsSequence, NextWordsCounter>;
 
-  void updateCountsFromFile(const boost::filesystem::path& file);
+  void updateCountsFromFile(const fs::path& file);
 
   static Chain::Edges counterToEdges(NextWordsCounter& counter);
 

@@ -9,7 +9,7 @@ Trainer::Trainer(int order) : m_order(order)
   assert(order >= 0);
 }
 
-Chain Trainer::createChainFromFiles(const std::vector<boost::filesystem::path>& files)
+Chain Trainer::createChainFromFiles(const std::vector<fs::path>& files)
 {
   m_counts.clear();
 
@@ -31,9 +31,9 @@ Chain Trainer::createChainFromFiles(const std::vector<boost::filesystem::path>& 
   return chain;
 }
 
-void Trainer::updateCountsFromFile(const boost::filesystem::path& file)
+void Trainer::updateCountsFromFile(const fs::path& file)
 {
-  boost::filesystem::ifstream input(file);
+  fs::ifstream input(file);
   WordStream wordStream(input);
 
   std::string word;
