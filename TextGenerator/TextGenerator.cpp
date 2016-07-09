@@ -24,6 +24,7 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
      "Starting words are provided through standard input, generated text is written to standard output.")
     ("input,i", value<std::vector<std::string>>()->multitoken(),
      "Set of space separated input text files for chain creation. Used only for training.")
+  // ToDo: need to actully save the chain
     ("chain,c", value<std::string>()->required(),
      "File with Markov's chain. When training, file will be created; when generating, file will be read.")
     ;
@@ -33,6 +34,7 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
   {
     store(command_line_parser(argc, argv).options(descr).run(), options);
 
+    // Placed before "notify" to handle missing required options
     if (options.empty())
     {
       std::cout << "Text generator based on Markov's chains." << std::endl;
@@ -64,27 +66,32 @@ boost::program_options::variables_map readOptions(int argc, const char* const ar
   return options;
 }
 
+void mainImpl(int argc, char* argv[])
+{
+  auto options = readOptions(argc, argv);
+
+  std::clog << "Creating chain..." << std::endl;
+  auto order = options["train"].as<int>();
+  auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
+  auto chain = Trainer(order).createChainFromFiles(inputFiles);
+
+  std::cout << "Input first " << order << " words: ";
+  auto generator = Generator(chain, std::cin);
+
+  std::clog << "Generating text..." << std::endl;
+  auto count = options["gen"].as<int>();
+  for (int i = 0; i < count; ++i)
+  {
+    std::cout << generator.genNextWord() << ' ';
+  }
+  std::cout << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
   try
   {
-    auto options = readOptions(argc, argv);
-
-    auto order = options["train"].as<int>();
-    auto&& inputFiles = stringsToPaths(options["input"].as<std::vector<std::string>>());
-    std::clog << "Creating chain..." << std::endl;
-    auto chain = Trainer(order).createChainFromFiles(inputFiles);
-
-    std::clog << "Input first " << order << " words :" << std::endl;
-    auto generator = Generator(chain, std::cin);
-
-    std::clog << "Generating text..." << std::endl;
-    auto count = options["gen"].as<int>();
-    for (int i = 0; i < count; ++i)
-    {
-      std::cout << generator.genNextWord() << ' ';
-    }
-    std::cout << std::endl;
+    mainImpl(argc, argv);
   }
   catch (const std::exception& e)
   {
