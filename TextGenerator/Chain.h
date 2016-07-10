@@ -6,10 +6,12 @@ struct Chain
 {
   struct Edge
   {
-    double probability;
+    double p;  // Cumulative probability
     std::string word;
   };
-  using Edges = std::vector<Edge>;  // Probabilities of these edges are assumed to sum up to 1.0
+  // Cumulative probabilities of the edges within this structure are 
+  // assumed to increase, with the last one being equal to 1.0
+  using Edges = std::vector<Edge>;
   using Content = std::unordered_map<WordsSequence, Edges>;
 
   int order;

@@ -45,19 +45,13 @@ const std::string& Generator::pickRandomWord(const Chain::Edges& edges)
 
   double sample = m_randDistr(m_randEngine);
 
-  for (const auto& edge : edges)
-  {
-    sample -= edge.probability;
-    if (sample < 0)
+  auto it = std::lower_bound(edges.begin(), edges.end(), sample,
+    [](const Chain::Edge& e1, double p)
     {
-      return edge.word;
-    }
-  }
+      return e1.p < p;
+    });
 
-  // We may get here only if
-  // 1. Probabilites do not sum up to 1. This should trigger an assertion.
-  // 2. There were some floating point rounding issues. This should return last word.
-  // However, distinguishing one from another would require some carefully deduced epsilon. I don't want to
-  // mess with it, just assume it is the second option.
-  return edges.back().word;
+  assert(it != edges.end());
+
+  return it->word;
 }

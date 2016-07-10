@@ -9,7 +9,7 @@ namespace boost
     template<class Archive>
     void serialize(Archive& ar, Chain::Edge& edge, const unsigned int version)
     {
-      ar & edge.probability;
+      ar & edge.p;
       ar & edge.word;
     }
 

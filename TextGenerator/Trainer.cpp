@@ -53,28 +53,23 @@ void Trainer::updateCountsFromFile(const fs::path& file)
 
 Chain::Edges Trainer::counterToEdges(NextWordsCounter& counter)
 {
-  int wordsCount = 0;
+  int totalCount = 0;
   for (const auto& item : counter)
   {
-    wordsCount += item.second;
+    totalCount += item.second;
   }
 
   Chain::Edges edges;
   edges.reserve(counter.size());
 
+  int currentCount = 0;
   for (auto& item : counter)
   {
-    auto probability = item.second / static_cast<double>(wordsCount);
+    currentCount += item.second;
+    auto p = currentCount / static_cast<double>(totalCount);
     auto& word = item.first;
-    edges.push_back({ probability, std::move(word) });
+    edges.push_back({ p, std::move(word) });
   }
-
-  // Sort edges so the most probable come first
-  std::sort(edges.begin(), edges.end(), 
-    [](const Chain::Edge& edge1, const Chain::Edge& edge2)
-    {
-      return edge1.probability > edge2.probability;
-    });
 
   return edges;
 }
