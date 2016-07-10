@@ -26,8 +26,8 @@ Generator::Generator(const Chain& chain, std::istream& input) :
 
 std::string Generator::genNextWord()
 {
-  auto it = m_chain.content.find(m_sequenceMaker.getSequence());
-  if (it == m_chain.content.end())
+  auto it = m_chain.nodes.find(m_sequenceMaker.getSequence());
+  if (it == m_chain.nodes.end())
   {
     throw std::runtime_error("Cannot generate next word! Train your chain better.");
   }

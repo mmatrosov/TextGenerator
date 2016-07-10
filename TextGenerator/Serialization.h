@@ -17,7 +17,7 @@ namespace boost
     void serialize(Archive& ar, Chain& chain, const unsigned int version)
     {
       ar & chain.order;
-      ar & chain.content;
+      ar & chain.nodes;
     }
   }
 }

@@ -25,7 +25,7 @@ Chain Trainer::createChainFromFiles(const std::vector<fs::path>& files)
   chain.order = m_order;
   for (auto& item : m_counts)
   {
-    chain.content[item.first] = counterToEdges(item.second);
+    chain.nodes[item.first] = counterToEdges(item.second);
   }
 
   return chain;

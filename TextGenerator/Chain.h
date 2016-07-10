@@ -12,8 +12,8 @@ struct Chain
   // Cumulative probabilities of the edges within this structure are 
   // assumed to increase, with the last one being equal to 1.0
   using Edges = std::vector<Edge>;
-  using Content = std::unordered_map<WordsSequence, Edges>;
+  using Nodes = std::unordered_map<WordsSequence, Edges>;
 
   int order;
-  Content content;
+  Nodes nodes;
 };
