@@ -82,8 +82,8 @@ void mainImpl(int argc, char* argv[])
 
     std::clog << "Saving chain to " << chainFile << "..." << std::endl;
     {
-      fs::ofstream output(chainFile);
-      boost::archive::text_oarchive archive(output);
+      fs::ofstream output(chainFile, std::ios::binary);
+      boost::archive::binary_oarchive archive(output);
       archive << chain.getData();
     }
   }
@@ -95,8 +95,8 @@ void mainImpl(int argc, char* argv[])
     std::clog << "Reading chain from " << chainFile << "..." << std::endl;
     {
       Chain::Data data;
-      fs::ifstream input(chainFile);
-      boost::archive::text_iarchive archive(input);
+      fs::ifstream input(chainFile, std::ios::binary);
+      boost::archive::binary_iarchive archive(input);
       archive >> data;
       chain.emplace(std::move(data));
     }
