@@ -2,8 +2,9 @@
 
 #include "Common.h"
 
-struct Chain
+class Chain
 {
+public:
   struct Edge
   {
     double p;  // Cumulative probability
@@ -14,6 +15,17 @@ struct Chain
   using Edges = std::vector<Edge>;
   using Nodes = std::unordered_map<WordsSequence, Edges>;
 
-  int order;
-  Nodes nodes;
+  struct Data
+  {
+    int order;
+    Nodes nodes;
+  };
+
+public:
+  explicit Chain(Data data);
+
+  const Data& getData() const;
+
+private:
+  Data m_data;
 };

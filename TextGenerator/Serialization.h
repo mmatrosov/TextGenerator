@@ -14,10 +14,10 @@ namespace boost
     }
 
     template<class Archive>
-    void serialize(Archive& ar, Chain& chain, const unsigned int version)
+    void serialize(Archive& ar, Chain::Data& data, const unsigned int version)
     {
-      ar & chain.order;
-      ar & chain.nodes;
+      ar & data.order;
+      ar & data.nodes;
     }
   }
 }

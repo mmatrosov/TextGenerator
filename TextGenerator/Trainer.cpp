@@ -20,15 +20,15 @@ Chain Trainer::createChainFromFiles(const std::vector<fs::path>& files)
     std::clog << " done" << std::endl;
   }
 
-  Chain chain;
+  Chain::Data data;
 
-  chain.order = m_order;
+  data.order = m_order;
   for (auto& item : m_counts)
   {
-    chain.nodes[item.first] = counterToEdges(item.second);
+    data.nodes[item.first] = counterToEdges(item.second);
   }
 
-  return chain;
+  return Chain(std::move(data));
 }
 
 void Trainer::updateCountsFromFile(const fs::path& file)

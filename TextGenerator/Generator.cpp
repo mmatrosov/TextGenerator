@@ -5,19 +5,19 @@
 
 Generator::Generator(const Chain& chain, std::istream& input) : 
   m_chain(chain),
-  m_sequenceMaker(chain.order),
+  m_sequenceMaker(chain.getData().order),
   m_randDistr(0, 1)
 {
   WordStream wordStream(input);
 
-  for (int i = 0; i < chain.order; ++i)
+  for (int i = 0; i < chain.getData().order; ++i)
   {
     std::string word;
 
     if (!(wordStream >> word))
     {
       throw std::runtime_error(("Too few initial words! "
-        "Expected: " + std::to_string(chain.order) + ", provided: " + std::to_string(i) + ".").c_str());
+        "Expected: " + std::to_string(chain.getData().order) + ", provided: " + std::to_string(i) + ".").c_str());
     }
 
     m_sequenceMaker.pushWord(word);
@@ -26,8 +26,8 @@ Generator::Generator(const Chain& chain, std::istream& input) :
 
 std::string Generator::genNextWord()
 {
-  auto it = m_chain.nodes.find(m_sequenceMaker.getSequence());
-  if (it == m_chain.nodes.end())
+  auto it = m_chain.getData().nodes.find(m_sequenceMaker.getSequence());
+  if (it == m_chain.getData().nodes.end())
   {
     throw std::runtime_error("Cannot generate next word! Train your chain better.");
   }

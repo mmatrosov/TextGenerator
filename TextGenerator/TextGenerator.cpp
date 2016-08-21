@@ -84,24 +84,26 @@ void mainImpl(int argc, char* argv[])
     {
       fs::ofstream output(chainFile);
       boost::archive::text_oarchive archive(output);
-      archive << chain;
+      archive << chain.getData();
     }
   }
 
   if (options.count("gen"))
   {
-    Chain chain; 
+    boost::optional<Chain> chain; 
 
     std::clog << "Reading chain from " << chainFile << "..." << std::endl;
     {
+      Chain::Data data;
       fs::ifstream input(chainFile);
       boost::archive::text_iarchive archive(input);
-      archive >> chain;
+      archive >> data;
+      chain.emplace(std::move(data));
     }
 
-    std::clog << "Input first " << chain.order << " words: " << std::endl;
+    std::clog << "Input first " << chain->getData().order << " words: " << std::endl;
     std::clog << "> ";
-    auto generator = Generator(chain, std::cin);
+    auto generator = Generator(*chain, std::cin);
 
     auto count = options["gen"].as<int>();
     std::clog << "Generating further " << count << " words:" << std::endl;

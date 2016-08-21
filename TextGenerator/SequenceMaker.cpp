@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "SequenceMaker.h"
 
-#include <boost/algorithm/cxx11/all_of.hpp>
-
 SequenceMaker::SequenceMaker(int maxSize) : m_maxSize(maxSize)
 {
   assert(maxSize >= 0);
